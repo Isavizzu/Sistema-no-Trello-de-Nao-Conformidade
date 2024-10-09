@@ -1,1 +1,5 @@
-descrição;conformidade;responsável;classificação;dataInicial;prazo;escalonamento;dataDeResolução
+descrição,conformidade,responsável,classificação,prazo,escalonamento,emailResponsavel,emailsSuperiores
+"Falha no login","Não Conforme","João Silva","Alta",3,"Paulo Silva- Maria Oliveira","joao.silva@email.com","paulo.silva@email.com - maria.oliveira@email.com"
+"Problema no banco de dados","Conforme","Ana Costa","Média",2,"Joana Costa","ana.costa@email.com","joana.costa@email.com"
+"Atualização de software","Não Aplicável","","","","","",""
+"Erro na interface de usuário","Não Conforme","Maria Oliveira","Alta",4,"Carlos Silva - Beatriz","maria.oliveira@email.com","carlos.silva@email.com - batriz@email.com"
