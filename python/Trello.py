@@ -62,8 +62,12 @@ class Trello:
         
         self.send_email(obj_email, email, "Não-Conformidade a ser resolvida.", non_conformity)
 
+
+    def organize_cards(self, list_id):
+        trello_list = self.board.get_list(list_id).list_cards()
+
     
-    def checking_deadline(self, list_id):
+    def checking_deadline(self):
         today = datetime.now().date()
         
         for card in self.cards:

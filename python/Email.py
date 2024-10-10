@@ -19,7 +19,7 @@ class Email:
             with smtplib.SMTP("smtp-mail.outlook.com", 587) as server:  
                 server.starttls()  
                 server.login(self.email, self.password)  
-                server.sendmail(sender_email, receiver_email, message.as_string())  
+                server.sendmail(self.email, receiver_email, message.as_string())  
             print("E-mail enviado com sucesso!")
         except Exception as e:
             print(f"Erro ao enviar o e-mail: {e}")

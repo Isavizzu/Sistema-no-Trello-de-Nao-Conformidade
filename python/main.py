@@ -17,7 +17,7 @@ file_path = os.path.join(os.getcwd(), 'checklist.csv')
 
 
 trello = Trello(API_KEY, API_SECRET, TOKEN, board_id)
-email = Email('seu email','sua senha')
+email = Email('melovizzu.isabelle@outlook.com','--')
 checklist = Document(file_path)
 
 
@@ -25,4 +25,6 @@ for non_conformity in checklist.non_conformities:
     trello.create_card(non_conformity_list, non_conformity[0], non_conformity[4],
                        non_conformity[2], non_conformity[3], non_conformity[5], non_conformity[7], non_conformity[6], email)
 
-trello.checking_deadline(non_conformity_list)
+trello.checking_deadline()
+trello.feedback_update(geral_feedback_list, checklist.get_number_of_rows(), checklist.non_conformities)
+
