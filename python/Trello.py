@@ -1,6 +1,7 @@
 from trello import TrelloClient
 from datetime import datetime, timedelta  
-from Document import Document
+from Email import Email
+
 
 class Trello:
     
@@ -21,43 +22,59 @@ class Trello:
         
     def create_classification_labels(self):
         labels = []
-        labels.append(labels.append(self.board.add_label("Alta", color="red")))
+        labels.append(self.board.add_label("Alta", color="red"))
         labels.append(self.board.add_label("Média", color="yellow"))
         labels.append(self.board.add_label("Baixa", color="green"))
         return labels
 
     
-    def create_card(self, list_id, non_conformity, deadline, responsible, classification, names, emails, email):
+    def create_card(self, list_id, non_conformity, deadline, responsible, classification, names, emails, email, obj_email):
+        
         trello_list = self.board.get_list(list_id)
     
         superiors_emails = [email.strip() for email in emails.split('-')]
         superiors = [name.strip() for name in names.split('-')]
-        
-        card = self.Card(non_conformity,deadline,responsible,classification,superiors, email, superiors_emails, 0)
-        self.cards.append(card)
 
-        new_card = trello_list.add_card(
-            name=card.non_conformity, 
-            start=datetime.now().isoformat(),
-            due=(datetime.now() + timedelta(days=card.deadline)).isoformat(), 
-            desc=f'Não Conformidade: {card.non_conformity}\n'
-                f'Responsável: {card.responsible}\n'
-                f'Classificação: {card.classification}\n'
-                f'Prazo (dias): {card.deadline}\n'
+        card = trello_list.add_card(
+            name=non_conformity, 
+            due=(datetime.now() + timedelta(days=int(deadline))).isoformat(),
+            desc=f'Não Conformidade: {non_conformity}\n'
+                f'Responsável: {responsible}\n'
+                f'Classificação: {classification}\n'
+                f'Prazo (dias): {deadline}\n'
+                f'Data de Início: {datetime.now().strftime("%d/%m/%Y")}\n'
                 f'Nº de Escalonamento: 0\n'
-                f'Superiores: {" -> ".join(card.superiors)}' 
+                f'Superiores: {" -> ".join(superiors)}' 
         )
-        
-        if card.classification == 'Alta':
+                
+        if classification == 'Alta':
             label = self.classification_labels[0]
             
-        elif card.classification == 'Média':
+        elif classification == 'Média':
             label = self.classification_labels[1]
 
         else:
             label = self.classification_labels[2]
         
-        new_card.add_label(label)
+        card.add_label(label)
+        card = self.Card(card,non_conformity,deadline,responsible,classification,superiors, email, superiors_emails, 0)
+        self.cards.append(card)
+        
+        self.send_email(obj_email, email, "Não-Conformidade a ser resolvida.", non_conformity)
+
+    
+    def checking_deadline(self, list_id):
+        today = datetime.now().date()
+        
+        for card in self.cards:
+            if card.card.due_date.date() == today:
+                card.card.comment(f"Lembrete: O prazo de entrega é hoje, verifique se obteve resposta no seu e-mail.")
+            
+            elif card.card.due_date.date() == today + timedelta(days=1):
+                card.card.comment(f"Lembrete: O prazo de entrega é amanhã, verifique se obteve resposta no seu e-mail.")
+            
+            elif card.card.due_date.date() < today:
+                card.card.comment(f"Lembrete: O prazo de entrega foi estourado.")
     
     
     def feedback_update(self,list_id, number_of_lines, non_conformities):
@@ -81,9 +98,13 @@ class Trello:
         )
         
     
+    def send_email(self,email, receiver_email, subject, body):
+        email.send_email(receiver_email, subject, body)
+
+    
     class Card:
         
-        def __init__(self, non_conformity, deadline, responsible, classification, superiors, responsible_email, superiors_emails, escalation_number):
+        def __init__(self, card, non_conformity, deadline, responsible, classification, superiors, responsible_email, superiors_emails, escalation_number):
             self.non_conformity = non_conformity
             self.deadline = deadline
             self.responsible = responsible
@@ -92,4 +113,5 @@ class Trello:
             self.responsible_email = responsible_email
             self.superiors_emails = superiors_emails
             self.escalation_number = escalation_number
+            self.card = card
     
