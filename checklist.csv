@@ -1,3 +1,4 @@
+"Isabelle","Plano de Qualidade","Projeto Construção"
 descrição,conformidade,responsável,classificação,prazo,escalonamento,emailResponsavel,emailsSuperiores
 "Falha no login","Não Conforme","João Silva","Baixa",1,"Paulo Silva- Maria Oliveira","isabelle.vizzu@pucpr.edu.br","paulo.silva@email.com - maria.oliveira@email.com"
 "Problema no banco de dados","Conforme","Ana Costa","Média",2,"Joana Costa","ana.costa@email.com","joana.costa@email.com"

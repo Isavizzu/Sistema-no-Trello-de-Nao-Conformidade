@@ -28,7 +28,7 @@ class Trello:
         return labels
 
     
-    def create_card(self, list_id, non_conformity, deadline, responsible, classification, names, emails, email, obj_email):
+    def create_card(self, list_id, non_conformity, deadline, responsible, classification, names, emails, email, obj_email, checklist):
         
         trello_list = self.board.get_list(list_id)
     
@@ -40,7 +40,7 @@ class Trello:
             due=(datetime.now() + timedelta(days=int(deadline))).isoformat(),
             desc=f'Não Conformidade: {non_conformity}\n'
                 f'Responsável: {responsible}\n'
-                f'Classificação: {classification}\n'
+                f'Prioridade: {classification}\n'
                 f'Prazo (dias): {deadline}\n'
                 f'Data de Início: {datetime.now().strftime("%d/%m/%Y")}\n'
                 f'Nº de Escalonamento: 0\n'
@@ -60,11 +60,28 @@ class Trello:
         card = self.Card(card,non_conformity,deadline,responsible,classification,superiors, email, superiors_emails, 0)
         self.cards.append(card)
         
-        self.send_email(obj_email, email, "Não-Conformidade a ser resolvida.", non_conformity)
+        self.send_email(obj_email, email, "Solicitação de Resolução de Não Conformidade", superiors[0], classification,
+                        non_conformity, checklist.auditor_name, 0, checklist, responsible, datetime.now().strftime("%d/%m/%Y"),
+                        (datetime.now() + timedelta(days=int(deadline))).strftime("%d/%m/%Y"), deadline)
 
+
+    def get_label_priority(self, card):
+        priority_map = {
+            'red': 0,    
+            'yellow': 1, 
+            'green': 2   
+        }
+        for label in card.labels:
+            if label.color in priority_map:
+                return priority_map[label.color]
+        return float('inf') 
 
     def organize_cards(self, list_id):
-        trello_list = self.board.get_list(list_id).list_cards()
+        cards = self.board.get_list(list_id).list_cards()
+        sorted_cards = sorted(cards, key=self.get_label_priority)
+
+        for index, card in enumerate(sorted_cards):
+            card.set_pos(index + 1)
 
     
     def checking_deadline(self):
@@ -81,29 +98,65 @@ class Trello:
                 card.card.comment(f"Lembrete: O prazo de entrega foi estourado.")
     
     
-    def feedback_update(self,list_id, number_of_lines, non_conformities):
+    def feedback_update(self,list_id, number_of_lines, non_conformities, checklist):
         trello_list = self.board.get_list(list_id)
         
         adherence_percentage = ((len(non_conformities) / number_of_lines) * 100 if number_of_lines != 0 else 0)
         if self.feedback_card == None:
             self.feedback_card = trello_list.add_card(
                 name="Feedback Geral", 
-                desc=f'Atualizado em: {datetime.now().isoformat(),}\n'
+                desc=f'Nome do Projeto: {checklist.project_name}\n'
+                    f'Nome do Artefato: {checklist.artefact_name}\n'
+                    f'Auditor: {checklist.auditor_name}\n'
+                    f'Atualizado em: {datetime.now().strftime("%d/%m/%Y")}\n'
                     f'Total de Itens: {number_of_lines}\n'
                     f'Itens não-conformes: {len(non_conformities)}\n'
-                    f'Aderência: {adherence_percentage}%\n'
+                    f'Aderência: {adherence_percentage:.2f}%\n'
             )
         else:
             self.feedback_card.set_description(  
-            f'Atualizado em: {datetime.now().isoformat()}\n'
-            f'Total de Itens: {number_of_lines}\n'
-            f'Itens não-conformes: {len(non_conformities)}\n'
-            f'Aderência: {adherence_percentage}%\n'
-        )
+                f'Nome do Projeto: {checklist.project_name}\n'
+                f'Nome do Artefato: {checklist.artefact_name}\n'
+                f'Auditor: {checklist.auditor_name}\n'
+                f'Atualizado em: {datetime.now().strftime("%d/%m/%Y")}\n'
+                f'Total de Itens: {number_of_lines}\n'
+                f'Itens não-conformes: {len(non_conformities)}\n'
+                f'Aderência: {adherence_percentage:.2f}%\n'
+            )
         
     
-    def send_email(self,email, receiver_email, subject, body):
+    def send_email(self,email, receiver_email, subject, immediate_superior, classification, non_conformity, auditor, escalation_number, checklist, responsible, date, resolution_date, deadline):
+        body = f"""
+Prezado(a) {responsible},
+
+Segue abaixo as informações da solicitação de resolução de não conformidade no projeto '{checklist.project_name}':
+
+Detalhes da Solicitação:
+- Responsável: {responsible}
+- Data da Solicitação: {date}
+- Prazo de Resolução: {deadline} dia(s)
+- Data da Solução: {resolution_date}
+- Número de Escalonamentos: {escalation_number}
+- Artefato: {checklist.artefact_name}
+- RQA Responsável: {auditor}
+
+Descrição da Não Conformidade: {non_conformity}
+
+Prioridade: {classification}
+Superior Imediato: {immediate_superior}
+
+Aguardo a resolução conforme o prazo estabelecido. Caso tenha alguma dúvida ou necessite de mais informações, favor entrar em contato.
+Caso deseje apresentar uma contestação, favor fazê-lo no prazo de 24 horas úteis.
+
+Atenciosamente,
+
+{auditor},
+Auditor(a) Interno(a)
+        """
+
         email.send_email(receiver_email, subject, body)
+
+    
 
     
     class Card:

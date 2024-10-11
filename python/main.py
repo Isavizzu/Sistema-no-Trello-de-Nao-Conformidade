@@ -14,17 +14,19 @@ geral_feedback_list = '670333b72501085cb440b2d3'
 higher_review_list = '670333abd36976bb56fd6830'
 resolved_list = '670333c493cfc1437ff2b630'
 file_path = os.path.join(os.getcwd(), 'checklist.csv')
+email = "algum_gmail@gmail.com"
+password = 'senha do google app (não é a mesma que a senha comum)'
 
 
 trello = Trello(API_KEY, API_SECRET, TOKEN, board_id)
-email = Email('melovizzu.isabelle@outlook.com','--')
+email = Email(email, password)
 checklist = Document(file_path)
 
 
 for non_conformity in checklist.non_conformities:
     trello.create_card(non_conformity_list, non_conformity[0], non_conformity[4],
-                       non_conformity[2], non_conformity[3], non_conformity[5], non_conformity[7], non_conformity[6], email)
+                       non_conformity[2], non_conformity[3], non_conformity[5], non_conformity[7], non_conformity[6], email, checklist)
 
 trello.checking_deadline()
-trello.feedback_update(geral_feedback_list, checklist.get_number_of_rows(), checklist.non_conformities)
-
+trello.feedback_update(geral_feedback_list, checklist.get_number_of_rows(), checklist.non_conformities, checklist)
+trello.organize_cards(non_conformity_list)
