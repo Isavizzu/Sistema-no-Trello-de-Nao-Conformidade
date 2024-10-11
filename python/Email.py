@@ -11,17 +11,23 @@ class Email:
 
 
     def send_email(self, to, subject, body):
-        mensagem = MIMEMultipart()
-        mensagem['From'] = self.email
-        mensagem['To'] = to
-        mensagem['Subject'] = subject
-        mensagem.attach(MIMEText(body, 'plain'))
+        try:
+            mensagem = MIMEMultipart()
+            mensagem['From'] = self.email
+            mensagem['To'] = to
+            mensagem['Subject'] = subject
+            mensagem.attach(MIMEText(body, 'plain'))
+            
+            connection = smtplib.SMTP(self.server, self.port)
+            connection.starttls()
+            connection.login(self.email,self.password)
+            connection.send_message(mensagem) 
+            connection.quit()
+            return True
         
-        connection = smtplib.SMTP(self.server, self.port)
-        connection.starttls()
-        connection.login(self.email,self.password)
-        connection.send_message(mensagem) 
-        connection.quit() 
+        except Exception as e:
+            print(f"Erro ao enviar e-mail: {e}")
+            return False
 
 
 

@@ -62,7 +62,7 @@ class Trello:
         
         self.send_email(obj_email, email, "Solicitação de Resolução de Não Conformidade", superiors[0], classification,
                         non_conformity, checklist.auditor_name, 0, checklist, responsible, datetime.now().strftime("%d/%m/%Y"),
-                        (datetime.now() + timedelta(days=int(deadline))).strftime("%d/%m/%Y"), deadline)
+                        (datetime.now() + timedelta(days=int(deadline))).strftime("%d/%m/%Y"), deadline, card)
 
 
     def get_label_priority(self, card):
@@ -89,13 +89,13 @@ class Trello:
         
         for card in self.cards:
             if card.card.due_date.date() == today:
-                card.card.comment(f"Lembrete: O prazo de entrega é hoje, verifique se obteve resposta no seu e-mail.")
+                self.comment(card.card, f"Lembrete: O prazo de entrega é hoje, verifique se obteve resposta no seu e-mail.")
             
             elif card.card.due_date.date() == today + timedelta(days=1):
-                card.card.comment(f"Lembrete: O prazo de entrega é amanhã, verifique se obteve resposta no seu e-mail.")
+                self.comment(card.card, f"Lembrete: O prazo de entrega é amanhã, verifique se obteve resposta no seu e-mail.")
             
             elif card.card.due_date.date() < today:
-                card.card.comment(f"Lembrete: O prazo de entrega foi estourado.")
+                self.comment(card.card, f"Lembrete: O prazo de entrega foi estourado.")
     
     
     def feedback_update(self,list_id, number_of_lines, non_conformities, checklist):
@@ -125,7 +125,7 @@ class Trello:
             )
         
     
-    def send_email(self,email, receiver_email, subject, immediate_superior, classification, non_conformity, auditor, escalation_number, checklist, responsible, date, resolution_date, deadline):
+    def send_email(self,email, receiver_email, subject, immediate_superior, classification, non_conformity, auditor, escalation_number, checklist, responsible, date, resolution_date, deadline,card):
         body = f"""
 Prezado(a) {responsible},
 
@@ -154,10 +154,14 @@ Atenciosamente,
 Auditor(a) Interno(a)
         """
 
-        email.send_email(receiver_email, subject, body)
+        if(email.send_email(receiver_email, subject, body)):
+            self.comment(card, f"E-mail de notificação sobre não conformidade enviado ao(à) responsável: {responsible}.")
 
+
+    def comment(self, card, comment_text):
+        card.comment(comment_text)
     
-
+    
     
     class Card:
         
