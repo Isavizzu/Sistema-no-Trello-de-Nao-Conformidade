@@ -14,8 +14,8 @@ geral_feedback_list = '670333b72501085cb440b2d3'
 higher_review_list = '670333abd36976bb56fd6830'
 resolved_list = '670333c493cfc1437ff2b630'
 file_path = os.path.join(os.getcwd(), 'checklist.csv')
-email = "algum_gmail@gmail.com"
-password = 'senha do google app (não é a mesma que a senha comum)'
+email = "email.ptestes04@gmail.com"
+password = 'iegv vxot dmgn juqg'
 
 
 trello = Trello(API_KEY, API_SECRET, TOKEN, board_id)
