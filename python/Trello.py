@@ -62,7 +62,7 @@ class Trello:
         
         self.send_email(obj_email, email, "Solicitação de Resolução de Não Conformidade", superiors[0], classification,
                         non_conformity, checklist.auditor_name, 0, checklist, responsible, datetime.now().strftime("%d/%m/%Y"),
-                        (datetime.now() + timedelta(days=int(deadline))).strftime("%d/%m/%Y"), deadline, card)
+                        (datetime.now() + timedelta(days=int(deadline))).strftime("%d/%m/%Y"), deadline, card.card)
 
 
     def get_label_priority(self, card):
@@ -75,6 +75,7 @@ class Trello:
             if label.color in priority_map:
                 return priority_map[label.color]
         return float('inf') 
+
 
     def organize_cards(self, list_id):
         cards = self.board.get_list(list_id).list_cards()
@@ -123,7 +124,9 @@ class Trello:
                 f'Itens não-conformes: {len(non_conformities)}\n'
                 f'Aderência: {adherence_percentage:.2f}%\n'
             )
-        
+        self.comment(self.feedback_card, f'Aviso: Cartão Feedback atualizado ás {datetime.now().strftime("%H:%M de %d/%m/%Y")}')
+        self.comment(self.feedback_card, f'Aviso: Aderência atualizada para: {adherence_percentage:.2f}%')
+
     
     def send_email(self,email, receiver_email, subject, immediate_superior, classification, non_conformity, auditor, escalation_number, checklist, responsible, date, resolution_date, deadline,card):
         body = f"""
@@ -155,7 +158,7 @@ Auditor(a) Interno(a)
         """
 
         if(email.send_email(receiver_email, subject, body)):
-            self.comment(card, f"E-mail de notificação sobre não conformidade enviado ao(à) responsável: {responsible}.")
+            self.comment(card, f"Aviso: E-mail de notificação sobre não conformidade enviado ao(à) responsável: {responsible}.")
 
 
     def comment(self, card, comment_text):

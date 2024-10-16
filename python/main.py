@@ -15,7 +15,7 @@ higher_review_list = '670333abd36976bb56fd6830'
 resolved_list = '670333c493cfc1437ff2b630'
 file_path = os.path.join(os.getcwd(), 'checklist.csv')
 email = "email.ptestes04@gmail.com"
-password = 'iegv vxot dmgn juqg'
+password = 'iegvvxotdmgnjuqg'
 
 
 trello = Trello(API_KEY, API_SECRET, TOKEN, board_id)
