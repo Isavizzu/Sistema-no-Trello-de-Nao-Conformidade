@@ -23,10 +23,13 @@ email = Email(email, password)
 checklist = Document(file_path)
 
 
-for non_conformity in checklist.non_conformities:
-    trello.create_card(non_conformity_list, non_conformity[0], non_conformity[4],
-                       non_conformity[2], non_conformity[3], non_conformity[5], non_conformity[7], non_conformity[6], email, checklist)
+if trello.cards == []:
+    for non_conformity in checklist.non_conformities:
+        trello.verify_card(non_conformity_list, non_conformity[0], non_conformity[4],
+                           non_conformity[2], non_conformity[3], non_conformity[5], non_conformity[7], non_conformity[6], email, checklist)
 
 trello.checking_deadline()
 trello.feedback_update(geral_feedback_list, checklist.get_number_of_rows(), checklist.non_conformities, checklist)
 trello.organize_cards(non_conformity_list)
+for non_comformity in trello.cards:
+    print(non_comformity.non_conformity)
