@@ -1,0 +1,38 @@
+Checklist de Verificação do Documento de Requisitos
+Histórico de Revisões
+
+
+
+Todas as revisões estão organizadas de forma cronológica?
+
+Introdução
+
+Os objetivos especificam os requisitos funcionais e não-funcionais a serem implementados?
+
+Descrição Geral do Sistema
+
+
+As funcionalidades convergem para os objetivos descritos na introdução?
+
+Escopo Negativo
+
+O escopo negativo menciona as funcionalidades que não serão incluídas no projeto?
+
+Requisitos Funcionais
+
+
+A prioridade de cada requisito (Essencial, Importante, Desejável) está indicada?
+
+Requisitos Não-Funcionais
+
+
+
+Todos os requisitos não-funcionais mencionam os casos de uso associados?
+
+Performance
+
+A seção de performance especifica todas as condições que afetam o desempenho do sistema?
+
+Referências
+
+As referências mencionam todas as fontes utilizadas na elaboração dos requisitos?
