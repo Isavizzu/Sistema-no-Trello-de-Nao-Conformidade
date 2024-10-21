@@ -3,4 +3,15 @@ descrição,conformidade,responsável,classificação,prazo,escalonamento,emailR
 "Falha no login","Não Conforme","João Silva","Baixa",1,"Paulo Silva- Maria Oliveira","isabelle.vizzu@pucpr.edu.br","paulo.silva@email.com - maria.oliveira@email.com"
 "Problema no banco de dados","Conforme","Ana Costa","Média",2,"Joana Costa","ana.costa@email.com","joana.costa@email.com"
 "Atualização de software","Não Aplicável","","","","","",""
-"Erro na interface de usuário","Não Conforme","Maria Oliveira","Alta",0,"Carlos Silva - Beatriz","isabelle.vizzu@pucpr.edu.br","helena.almeida@pucpr.edu.br - batriz@email.com"
+"Erro na interface de usuário","Não Conforme","Maria Oliveira","Alta",0,"Carlos Silva - Beatriz","isabelle.vizzu@pucpr.edu.br","carlos.silva@email.com - batriz@email.com"
+
+
+"Descrição","Conformidade","Responsável","Classificação","Prazo","Escalonamento","Email Responsável","Emails Superiores"
+"Histórico de Revisões","Não Conforme","João Silva","Baixa",1,"Ana Costa","joao.silva@email.com","ana.costa@email.com"
+"Introdução","Não Conforme","Maria Oliveira","Média",2,"Carlos Silva","maria.oliveira@email.com","carlos.silva@email.com"
+"Descrição Geral do Sistema","Não Conforme","Ana Costa","Alta",0,"João Silva - Beatriz","ana.costa@email.com","joao.silva@email.com - beatriz@email.com"
+"Escopo Negativo","Não Conforme","João Silva","Média",1,"Carlos Silva","joao.silva@email.com","carlos.silva@email.com"
+"Requisitos Funcionais","Não Conforme","Maria Oliveira","Alta",0,"Ana Costa - Paulo Silva","maria.oliveira@email.com","ana.costa@email.com - paulo.silva@email.com"
+"Requisitos Não-Funcionais","Não Conforme","Beatriz","Alta",2,"Carlos Silva","beatriz@email.com","carlos.silva@email.com"
+"Performance","Não Conforme","Ana Costa","Média",1,"João Silva","ana.costa@email.com","joao.silva@email.com"
+"Referências","Não Conforme","Beatriz","Média",1,"Ana Costa","beatriz@email.com","ana.costa@email.com"
