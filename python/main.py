@@ -4,10 +4,16 @@ from trello import TrelloClient
 from Trello import Trello
 from Document import Document
 from Email import Email
+import time
+import threading
+
+#API_KEY = '423540bca81af3fcc2df3f9bbe24d583'
+API_SECRET = 'e19c613581328584049ad446beb3616c7467c71e21b3294f41786e9d4212a0e0'
+TOKEN = 'ATTAc8e04c1d8e0c8f9055e618534d5c95708386c0fe83060ee96498ccfcefd1f76cA452D6D0'
 
 API_KEY = 'f02469d093a13aca46ed2b5fbb7d8655'
-API_SECRET = 'e19c613581328584049ad446beb3616c7467c71e21b3294f41786e9d4212a0e0'
-TOKEN = 'ATTAda46d707198647510441a1b2be6f8f6ed1c9e07aee1adaf9dc160d3e67578b6c8EA544A0'
+#API_SECRET = 'e19c613581328584049ad446beb3616c7467c71e21b3294f41786e9d4212a0e0'
+#TOKEN = 'ATTAda46d707198647510441a1b2be6f8f6ed1c9e07aee1adaf9dc160d3e67578b6c8EA544A0'
 board_id = 'fYUZJCTz'
 non_conformity_list = '67032c674496e526dacc3e1b'
 geral_feedback_list = '670333b72501085cb440b2d3'
@@ -25,7 +31,7 @@ checklist = Document(file_path)
 
 if trello.cards == []:
     for non_conformity in checklist.non_conformities:
-        trello.verify_card(non_conformity_list, non_conformity[0], non_conformity[4],
+        trello.verify_card(non_conformity_list, higher_review_list, resolved_list, non_conformity[0], non_conformity[4],
                            non_conformity[2], non_conformity[3], non_conformity[5], non_conformity[7], non_conformity[6], email, checklist)
 
 trello.checking_deadline()
@@ -33,3 +39,12 @@ trello.feedback_update(geral_feedback_list, checklist.get_number_of_rows(), chec
 trello.organize_cards(non_conformity_list)
 for non_comformity in trello.cards:
     print(non_comformity.non_conformity)
+
+thread1 = threading.Thread(target=trello.run_deadline_checker, args=(non_conformity_list,higher_review_list))
+thread2 = threading.Thread(target=trello.check_and_move_cards_review, args=(higher_review_list, resolved_list))
+thread1.start()
+thread2.start()
+
+trello.organize_cards(higher_review_list)
+print("ola :)")
+

@@ -3,4 +3,4 @@ descrição,conformidade,responsável,classificação,prazo,escalonamento,emailR
 "Falha no login","Não Conforme","João Silva","Baixa",1,"Paulo Silva- Maria Oliveira","isabelle.vizzu@pucpr.edu.br","paulo.silva@email.com - maria.oliveira@email.com"
 "Problema no banco de dados","Conforme","Ana Costa","Média",2,"Joana Costa","ana.costa@email.com","joana.costa@email.com"
 "Atualização de software","Não Aplicável","","","","","",""
-"Erro na interface de usuário","Não Conforme","Maria Oliveira","Alta",0,"Carlos Silva - Beatriz","isabelle.vizzu@pucpr.edu.br","carlos.silva@email.com - batriz@email.com"
+"Erro na interface de usuário","Não Conforme","Maria Oliveira","Alta",0,"Carlos Silva - Beatriz","isabelle.vizzu@pucpr.edu.br","helena.almeida@pucpr.edu.br - batriz@email.com"
