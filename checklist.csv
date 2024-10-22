@@ -1,4 +1,4 @@
-"Isabelle", "Projeto", "Artefato"
+"Isabelle", "Documento de Requisitos", "EO System"
 "Descrição","Conformidade","Responsável","Classificação","Prazo","Escalonamento","Email Responsável","Emails Superiores"
 "Todas as revisões estão organizadas de forma cronológica?","Não Conforme","João Silva","Baixa",1,"Isabelle Vizzu","joao.silva@email.com","isabelle.vizzu@pucpr.edu.br"
 "Os objetivos especificam os requisitos funcionais e não-funcionais a serem implementados?","Não Conforme","Maria Oliveira","Média",2,"Maria Fernanda Moreira","maria.oliveira@email.com","maria.perez@pucpr.edu."

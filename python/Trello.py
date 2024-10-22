@@ -208,7 +208,7 @@ Auditor(a) Interno(a)
         trello_list = self.board.get_list(list_id)
         existing_cards = trello_list.list_cards()
         
-        adherence_percentage = ((len(non_conformities) / number_of_lines) * 100 if number_of_lines != 0 else 0)
+        adherence_percentage = ((checklist.get_number_of_conformities() / number_of_lines) * 100 if number_of_lines != 0 else 0)
 
         if (self.verify_feedback_card(existing_cards)):
             self.feedback_card.set_description(

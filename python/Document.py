@@ -44,4 +44,16 @@ class Document:
             print(f"Error reading file: {e}")
             return 0  
     
+    
+    def get_number_of_conformities(self) -> int:
+        try:
+            with open(self.file_name, mode='r', newline='', encoding='utf-8') as file:
+                reader = csv.reader(file, delimiter=',') 
+                next(reader)
+                next(reader)
+                return sum(1 for row in reader if row[1] == "Conforme")
+        except Exception as e:
+            print(f"Error reading file: {e}")
+            return 0  
+    
 
